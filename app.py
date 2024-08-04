@@ -9,6 +9,7 @@ from densepose.vis.extractor import DensePoseResultExtractor
 from densepose.vis.densepose_results import DensePoseResultsFineSegmentationVisualizer as Visualizer
 import tempfile
 import shutil
+from tqdm import tqdm
 
 # Function to process video
 def process_video(input_video_path):
@@ -33,8 +34,9 @@ def process_video(input_video_path):
     fourcc = cv2.VideoWriter_fourcc(*'mp4v')
     out = cv2.VideoWriter(output_video_path, fourcc, fps, (width, height))
 
-    # Process each frame
-    while cap.isOpened():
+    # Process each frame with tqdm
+    total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+    for _ in tqdm(range(total_frames), desc="Processing Frames", unit="frames"):
         ret, frame = cap.read()
         if not ret:
             break
