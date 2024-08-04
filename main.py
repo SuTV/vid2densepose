@@ -3,6 +3,7 @@ import argparse
 import cv2
 import numpy as np
 import torch
+from tqdm import tqdm
 from densepose import add_densepose_config
 from densepose.vis.densepose_results import (
     DensePoseResultsFineSegmentationVisualizer as Visualizer,
@@ -32,8 +33,9 @@ def main(input_video_path="./input_video.mp4", output_video_path="./output_video
     fourcc = cv2.VideoWriter_fourcc(*"mp4v")
     out = cv2.VideoWriter(output_video_path, fourcc, fps, (width, height))
 
-    # Process each frame
-    while cap.isOpened():
+    # Process each frame with tqdm
+    total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+    for _ in tqdm(range(total_frames), desc="Processing Frames", unit="frames"):
         ret, frame = cap.read()
         if not ret:
             break
