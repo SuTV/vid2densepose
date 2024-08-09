@@ -1,5 +1,6 @@
 import argparse
 
+import os
 import cv2
 import numpy as np
 import torch
@@ -66,6 +67,13 @@ if __name__ == "__main__":
     parser.add_argument(
         "-o", "--output_video_path", type=str, default="./output_video.mp4"
     )
+    parser.add_argument(
+        "-bp", "--base_path", type=str, default=None
+    )
     args = parser.parse_args()
+
+    # set base path
+    if args.base_path is not None:
+        os.chdir(args.base_path)
 
     main(args.input_video_path, args.output_video_path)
